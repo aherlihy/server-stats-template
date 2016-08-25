@@ -8,6 +8,8 @@ const path = require('path');
 const ROOT_DIR = path.resolve(`${__dirname}/../..`);
 const SRC_DIR = path.join(ROOT_DIR, 'src');
 
+const runner = require('mongodb-runner');
+
 let mainWindow;
 
 function createWindow() {
@@ -19,7 +21,9 @@ function createWindow() {
 }
 
 app.on('ready', () => {
-  createWindow();
+  runner.start({ port: 27025 }, () => {
+    createWindow();
+  });
   watch.watchTree(SRC_DIR, (f, curr, prev) => {
     if (typeof f === 'object' && prev === null && curr === null) {
       // don't reload on initial load
@@ -37,7 +41,9 @@ app.on('ready', () => {
 
 app.on('window-all-closed', () => {
   watch.unwatchTree(SRC_DIR);
-  app.quit();
+  runner.stop({ port: 27025 }, () => {
+    app.quit();
+  });
 });
 
 app.on('activate', () => {

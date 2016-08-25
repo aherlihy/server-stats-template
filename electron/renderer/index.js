@@ -2,9 +2,9 @@ require('babel-register')({ extensions: ['.jsx'] });
 
 const React = require('react');
 const ReactDOM = require('react-dom');
+const OpCounterComponent = require('../../lib/components/opcounters-component');
 
-const ServerStatsComponent = require('../../lib/components');
 
 ReactDOM.render(
-  React.createElement(ServerStatsComponent), document.getElementById('container')
+  React.createElement(OpCounterComponent), document.getElementById('opCounterContainer')
 );
